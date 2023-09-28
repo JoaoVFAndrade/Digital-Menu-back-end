@@ -7,16 +7,16 @@
 
 ``` bash
 # Clone este repositório
-$ git clone https://github.com/Guigite/DigitalMenu.git
+$ git clone https://github.com/JoaoVFAndrade/Digital-Menu-back-end.git
 
 # Acesse a pasta do projeto no seu terminal
-$ cd DigitalMenu
+$ cd (na pasta que esta seu projeto)
 
 # Instale as dependencias 
 $ npm install
 
 # Execute a aplicação
-$ npm run start:both
+$ npm run dev
 ```
 
 ## 💻Tecnologias utilizadas

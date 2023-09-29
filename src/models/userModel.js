@@ -91,11 +91,11 @@ const UserModel = {
         }
     },
 
-    registrar: async (nome,senha,tipoAcesso) => {
+    registrar: async (nome,senha) => {
         try{
             const connection = await createConnection();
-            const sql = 'INSERT INTO usuario (USUARIO,SENHA,TIPOACESSO) VALUES(?,?,?);';
-            await connection.query(sql, [nome,senha,tipoAcesso]);
+            const sql = 'INSERT INTO usuario (USUARIO,SENHA,TIPOACESSO) VALUES(?,?,\'administrador\');';
+            await connection.query(sql, [nome,senha]);
             await connection.end();
         }catch(err){
             throw err;

@@ -33,9 +33,9 @@ exports.login = async (req, res) => {
   };
 
 exports.register = async (req, res) => {
-    const {nome, senha, tipoAcesso} = req.body;
+    const {nome, senha} = req.body;
 
-    if(!nome || !senha || !tipoAcesso) {
+    if(!nome || !senha) {
         return res.status(400).json({ message: 'Todos os campos devem ser preenchidos'});
     }
 
@@ -47,17 +47,13 @@ exports.register = async (req, res) => {
         return res.status(400).json({ message: 'Nome deve conter apensas letras e espaços'});
     }
 
-    if(!validartipoAcesso.includes(tipoAcesso)){
-        return res.status(400).json({ message: 'Tipo de acesso inválido'});
-    }
-
     try{
         const existUser = await UserModel.verificaExistencia(nome);
 
         if(existUser.length > 0){
             res.status(404).json({message : 'Usuario ja existe'});
         }else{
-            await UserModel.registrar(nome,senha, tipoAcesso);
+            await UserModel.registrar(nome,senha);
             res.status(201).json({message : 'Registro bem-sucedido'});
         }
     }catch(err){

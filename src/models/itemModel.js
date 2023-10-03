@@ -1,4 +1,4 @@
-const {createConnection} = require('../connection/connections');
+const {createConnection} = require('../connection/connection');
 
 const itemModel = {
     adicionaItem : async( id_pedido, id_produto,qtde, observacao) =>{

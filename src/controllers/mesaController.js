@@ -1,6 +1,6 @@
 const express = require('express');
 const mesaModel = require('../models/mesaModel');
-const connection = require('../connection/connections');
+const connection = require('../connection/connection');
 
 const validStatus = ["ATIVADO", "DESATIVADO"]
 
@@ -95,21 +95,21 @@ exports.listarPorId = async(req, res) =>{
 };
 
 exports.atualizarMesa = async (req, res) => {
-    const { id, idNovo, status } = req.body;
-
+    const { idMesa } = req.params;
+    console.log(idMesa)
     
-    if(!id || !idNovo || !status){ 
+    if(!idMesa){ 
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
     }
 
     try {
-        const buscarMesa = await mesaModel.listarMesaPorId(id);
-
+        const buscarMesa = await mesaModel.listarMesaPorId(idMesa);
+        console.log("Chegou até aqui" + idMesa)
         if (!buscarMesa) {
             return res.status(404).json({ message: 'Mesa não encontrada' });
         }
 
-        const mesa = await mesaModel.atualizarMesa(idNovo, status, id);
+        const mesa = await mesaModel.atualizarMesa(idMesa);
 
         res.status(204).json(mesa);
     } catch (error) {

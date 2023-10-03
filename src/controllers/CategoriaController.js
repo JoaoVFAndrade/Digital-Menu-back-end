@@ -1,6 +1,6 @@
 const express = require('express');
 const categoriaModel = require('../models/categoriaModel');
-const connection = require('../connection/connections');
+const connection = require('../connection/connection');
 
 const validStatus = ["ATIVADO", "DESATIVADO"];
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const pedidoModel = require('../models/pedidoModel');
-const connection = require('../connection/connections');
+const connection = require('../connection/connection');
 
 const validStatus = ["ABERTO", "CANCELADO", "ENCERRADO"];
 

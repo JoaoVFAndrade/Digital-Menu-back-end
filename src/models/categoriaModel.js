@@ -1,4 +1,4 @@
-const {createConnection} = require('../connection/connections');
+const {createConnection} = require('../connection/connection');
 
 const categoriaModel = {
     listarCategoria: async () => {

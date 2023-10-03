@@ -1,6 +1,6 @@
 const express = require('express');
 const relatorioModel = require('../models/relatorioModel');
-const connection = require('../connection/connections');
+const connection = require('../connection/connection');
 
 
 exports.totalPedidos = async(req,res) => {

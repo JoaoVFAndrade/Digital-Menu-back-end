@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const token = require('../middleware/jwtToken');
+const token = require('../middleware/token');
 const pedidoController = require('../controllers/pedidoController');
 
 router.get('/pedidos/all', token, pedidoController.listarPedido);

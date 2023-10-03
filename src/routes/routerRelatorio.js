@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const token = require('../middleware/jwtToken');
+const token = require('../middleware/token');
 const relatorioController = require('../controllers/relatorioController');
 
 router.get('/relatorio/total', token, relatorioController.totalPedidos);

@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const token = require('../src/middleware/jwtToken')
+const token = require('../src/middleware/token')
 const routerUser = require('./routes/routerUser',token);
 const routerMesa = require('./routes/routerMesa');
 const routerItem = require('./routes/routerItem');

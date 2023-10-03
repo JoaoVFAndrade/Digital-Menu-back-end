@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/userController');
-const token = require('../middleware/jwtToken')
+const token = require('../middleware/token')
 router.get('/', (req,res) => {res.status(200).send("Bem-vindo à minha API")});
 
 //login:

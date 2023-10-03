@@ -1,4 +1,4 @@
-const {createConnection} = require('../connection/connections');
+const {createConnection} = require('../connection/connection');
 
 const mesaModel = {
     criarMesa : async(idMesa) =>{
@@ -75,11 +75,11 @@ const mesaModel = {
         }
     },
     
-    atualizarMesa : async(idNovo,status,id) =>{
+    atualizarMesa : async(idMesa) =>{
         try {
             const connection = await createConnection();
-            const sql = 'UPDATE mesa SET idmesa = ?, status = ? WHERE idmesa = ?';
-            await connection.query(sql,[idNovo,status,id]);
+            const sql = 'UPDATE mesa SET status = \'ATIVADO\' WHERE idmesa = ?;';
+            await connection.query(sql,[idMesa]);
             await connection.end();
         }catch (err) {
             throw err;

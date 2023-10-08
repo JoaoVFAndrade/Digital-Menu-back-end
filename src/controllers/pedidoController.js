@@ -13,7 +13,15 @@ exports.adicionaPedido = async(req,res) => {
 
     try {
         const pedido = await pedidoModel.adicionarPedido(idMesa);
-        res.status(201).json(pedido);
+
+        // Verifica se há resultados na matriz e pega o valor de idpedido
+        const idpedido = pedido.length > 0 ? pedido[0].idpedido : null;
+    
+        if (idpedido !== null) {
+            res.status(201).json({ idpedido });
+        } else {
+            res.status(500).json({ message: 'Erro ao criar pedido' });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({message : 'Erro interno'});

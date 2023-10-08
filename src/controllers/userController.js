@@ -19,7 +19,7 @@ exports.login = async (req, res) => {
   
       if (user.length > 0) {
         // Se as credenciais estiverem corretas, ira gerar o token
-        const token = jwt.sign({ username: nome }, secretKey, { expiresIn: '40m' });
+        const token = jwt.sign({ username: nome }, secretKey, { expiresIn: '2h' });
   
         // Envie o token JWT como parte da resposta
         res.status(200).json({ message: 'Login bem-sucedido', token: token });

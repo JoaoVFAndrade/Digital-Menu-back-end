@@ -4,11 +4,16 @@ const pedidoModel = {
     adicionarPedido : async(idMesa) => {
         try{
             const connection = await createConnection();
-        const sql = 
+            const sql = 
                 'INSERT INTO pedido (idpedido, id_mesa, total, data, status) '
                 + 'VALUES (DEFAULT, ?, DEFAULT, DEFAULT, DEFAULT);'
                 await connection.query(sql, [idMesa]);
-                await connection.end();
+            
+            const [rows, fields] = await connection.query(
+                'SELECT LAST_INSERT_ID() AS idpedido;'
+                );
+                await connection.end();            
+                return rows; 
         }catch(erro){
         throw erro;
         }

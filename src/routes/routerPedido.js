@@ -11,7 +11,7 @@ router.get('/pedidos/faixa-dia', token, pedidoController.listarProdutoPorFaixaDi
 router.get('/pedidos/venda-por-dia', token, pedidoController.listarVendasPorDia);
 router.post('/pedidos', token, pedidoController.adicionaPedido);
 router.put('/pedidos/alterar-item', token, pedidoController.atualizaPedidoItemAlterado);
-router.put('/pedidos/atualizar-vazio', token, pedidoController.atualizarPedidoVazio);
+router.put('/pedidos/encerra-pedido', token, pedidoController.atualizarPedidoVazio);
 router.delete('/pedidos', token, pedidoController.deletarPedido);
 router.post('/pedidos/cancelar', token, pedidoController.cancelarPedido);
 

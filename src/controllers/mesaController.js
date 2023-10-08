@@ -30,7 +30,7 @@ exports.listarTodasMesas = async(req, res) =>{
         const mesas = await mesaModel.listarTodasMesas();
         res.json(mesas);
     }catch(error){
-        console.error(err);
+        console.error(error);
         res.status(500).json({message : 'Erro interno'});;
     }
 };
@@ -96,7 +96,6 @@ exports.listarPorId = async(req, res) =>{
 
 exports.atualizarMesa = async (req, res) => {
     const { idMesa } = req.params;
-    console.log(idMesa)
     
     if(!idMesa){ 
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
@@ -104,7 +103,7 @@ exports.atualizarMesa = async (req, res) => {
 
     try {
         const buscarMesa = await mesaModel.listarMesaPorId(idMesa);
-        console.log("Chegou até aqui" + idMesa)
+        
         if (!buscarMesa) {
             return res.status(404).json({ message: 'Mesa não encontrada' });
         }

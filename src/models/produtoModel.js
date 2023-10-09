@@ -149,10 +149,24 @@ const produtoModel = {
             + 'descricao = ?, '
             + 'id_categoria = (SELECT idcategoria FROM categoria WHERE nome = ?), '
             + 'status = ? '
-            + 'WHERE nome = ?';
+            + 'WHERE nome = ?;';
             await connection.query(sql,[nomeNovo,preco,descricao,categoria,status,nome]);
             await connection.end();
         } catch (error) {
+            throw error;
+        }
+    },
+
+    alterarPrecoDoProduto : async(nome,preco) => {
+        try{
+            const connection = await createConnection();
+            const sql = 
+            'UPDATE produto SET '
+            +'preco = ? '
+            +'WHERE nome = ?;';
+            await connection.query(sql,[preco,nome]);
+            await connection.end();
+        }catch(error){
             throw error;
         }
     },

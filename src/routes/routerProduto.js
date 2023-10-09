@@ -13,5 +13,6 @@ router.get('/produto/descricao', token, produtoController.listarProdutoPorDescri
 router.get('/produto/categoria', token, produtoController.listarProdutoPorCategoria);
 router.get('/produto/status', token, produtoController.listarProdutoPorStatus);
 router.put('/produto', token, produtoController.alterarProdutoPeloNome);
+router.put('/produto/altera-preco', token, produtoController.alterarPrecoDoProduto);
 router.delete('/produto', token, produtoController.deletarProduto);
 module.exports = router;

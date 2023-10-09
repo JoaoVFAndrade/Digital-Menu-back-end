@@ -137,6 +137,27 @@ exports.alterarProdutoPeloNome = async(req, res) => {
     }
 };
 
+exports.alterarPrecoDoProduto = async(req,res) =>{
+    const {nome, preco} = req.body;
+    if(!nome){
+        return res.status(404).json({message : 'Campo nome obrigatorio'});
+    }
+
+    const existeProduto= await produtoModel.listarPorStatus(nome);
+
+    try {
+        if(!existeProduto){
+            res.status(404).json({message : 'Produto nao encontratos'});
+        }else{
+        const produtoAtualizado = await produtoModel.alterarPrecoDoProduto(nome,preco);
+        res.status(200).json({succes : 'Produto alterado com sucesso'});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message : 'Erro interno'});
+    }
+}
+
 exports.deletarProduto = async(req, res) => {
     const{nome} = req.body;
         if(!nome){

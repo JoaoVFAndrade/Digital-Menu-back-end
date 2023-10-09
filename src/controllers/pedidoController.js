@@ -4,29 +4,39 @@ const connection = require('../connection/connection');
 
 const validStatus = ["ABERTO", "CANCELADO", "ENCERRADO"];
 
-exports.adicionaPedido = async(req,res) => {
-    const {idMesa} = req.body;
-
+exports.adicionaPedido = async (req, res) => {
+    const { idMesa } = req.body;
+  
     if (!idMesa) {
-        return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
+      return res.status(400).json({ message: 'Campo(s) obrigatorio(s) nao preenchido' });
     }
-
+  
+    // Verificar se há um pedido aberto nesta mesa
+    const verifica = await pedidoModel.verificaPedidoAberto(idMesa);
+  
+    if (verifica !== 0) {
+      return res.status(400).json({ message: 'Ja existe um pedido aberto nesta mesa' });
+    }
+  
     try {
-        const pedido = await pedidoModel.adicionarPedido(idMesa);
-
-        // Verifica se há resultados na matriz e pega o valor de idpedido
-        const idpedido = pedido.length > 0 ? pedido[0].idpedido : null;
-    
-        if (idpedido !== null) {
-            res.status(201).json({ idpedido });
-        } else {
-            res.status(500).json({ message: 'Erro ao criar pedido' });
-        }
+      // Se não houver pedido aberto, adicionar o pedido
+      const pedido = await pedidoModel.adicionarPedido(idMesa);
+  
+      // Verifica se há resultados na matriz e pega o valor de idpedido
+      const idpedido = pedido.length > 0 ? pedido[0].idpedido : null;
+  
+      if (idpedido !== null) {
+        res.status(201).json({ idpedido });
+      } else {
+        res.status(500).json({ message: 'Erro ao criar pedido' });
+      }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({message : 'Erro interno'});
+      console.error(error);
+      res.status(500).json({ message: 'Erro interno' });
     }
-};
+  };
+  
+  
 
 exports.listarPedido = async(req, res) => {
     try {

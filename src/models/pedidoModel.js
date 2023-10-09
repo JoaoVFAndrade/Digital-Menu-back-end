@@ -18,6 +18,24 @@ const pedidoModel = {
         throw erro;
         }
     },
+    verificaPedidoAberto : async (idMesa) => {
+        try {
+            const connection = await createConnection();
+          // Execute a consulta SQL para contar pedidos abertos na mesa
+            const [result] = await connection.query(
+            'SELECT COUNT(*) AS count_pedidos_abertos FROM pedido WHERE ID_MESA = ? AND status = "ABERTO";',
+            [idMesa]
+          );
+            await connection.end();
+        // Acessa o valor retornado da contagem
+            const countPedidosAbertos = result[0].count_pedidos_abertos;
+        // Verifica se tem pedido aberto
+            return countPedidosAbertos
+        }catch (error) {
+            console.error(error);
+            throw error; 
+        }
+    },
 
     listarPedido : async() => {
         try {

@@ -8,8 +8,8 @@ router.get('/categorias/listar/ativas', token, categoriaController.listarCategor
 router.get('/categorias/listar/status', token, categoriaController.listarCategoriaPorStatus);
 router.get('/categorias/listar-por-id', token, categoriaController.listarPorId);
 router.get('/categorias/listar/nome', token, categoriaController.listarPorNome);
-router.post('/categorias/criar', token, categoriaController.criarCategoria);
-router.put('/categorias/atualizar', token, categoriaController.updateCategoria);
-router.delete('/categorias/deletar', token, categoriaController.deleteCategoria);
+router.post('/categorias/criar', categoriaController.criarCategoria);
+router.put('/categorias/atualizar', categoriaController.updateCategoria);
+router.delete('/categorias/deletar', categoriaController.deleteCategoria);
 
 module.exports = router;

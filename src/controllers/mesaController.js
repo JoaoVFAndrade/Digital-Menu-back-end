@@ -117,7 +117,7 @@ exports.atualizarMesa = async (req, res) => {
 };
 
 
-exports.desativarMesa =  async(req, res) =>{
+exports.  desativarMesa =  async(req, res) =>{
     const{idMesa} = req.params;
     
     if(!idMesa){

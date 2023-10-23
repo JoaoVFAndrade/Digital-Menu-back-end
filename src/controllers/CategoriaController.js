@@ -128,7 +128,7 @@ exports.updateCategoria = async(req,res) => {
 };
 
 exports.deleteCategoria = async(req, res) => {
-    const idcategoria = req.body.idcategoria;
+    const idcategoria = req.body.idCategoria;
 
     if(!idcategoria){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});

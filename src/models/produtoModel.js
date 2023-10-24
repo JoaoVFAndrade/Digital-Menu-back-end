@@ -48,7 +48,7 @@ const produtoModel = {
         }
     },
 
-    listarProdutoPorNome : async(nome) => {
+    listarProdutoPorId : async(idProduto) => {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
@@ -56,8 +56,8 @@ const produtoModel = {
                 + 'FROM produto p '
                 + 'INNER JOIN categoria c '
                 + 'ON p.id_categoria = c.idcategoria '
-                + 'WHERE p.nome LIKE CONCAT(\'%\',?,\'%\');',
-                [nome]
+                + 'WHERE p.idproduto = ?;',
+                [idProduto]
             );
             await connection.end();
             return rows;
@@ -139,7 +139,7 @@ const produtoModel = {
         }
     },
 
-    alterarProdutoPeloNome : async(nomeNovo, preco, descricao, categoria, status, nome) => {
+    alterarProduto : async(nome, preco, descricao, categoria, status, idproduto) => {
         try {
             const connection = await createConnection();
             const sql = 
@@ -149,8 +149,8 @@ const produtoModel = {
             + 'descricao = ?, '
             + 'id_categoria = (SELECT idcategoria FROM categoria WHERE nome = ?), '
             + 'status = ? '
-            + 'WHERE nome = ?;';
-            await connection.query(sql,[nomeNovo,preco,descricao,categoria,status,nome]);
+            + 'WHERE idproduto = ?;';
+            await connection.query(sql,[nome,preco,descricao,categoria,status,idproduto]);
             await connection.end();
         } catch (error) {
             throw error;

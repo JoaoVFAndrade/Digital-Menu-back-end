@@ -38,11 +38,11 @@ exports.listarProdutoAtivo = async(req, res) => {
     }
 };
 
-exports.listarProdutoPorNome = async(req, res) => {
-    const {nome} = req.body;
+exports.listarProdutoPorId = async(req, res) => {
+    const {idproduto} = req.body;
 
     try {
-        const produto = await produtoModel.listarProdutoPorNome(nome);
+        const produto = await produtoModel.listarProdutoPorId(idproduto);
         res.status(200).json(produto);
     } catch (error) {
         console.error(error);
@@ -116,19 +116,19 @@ exports.listarProdutoPorCategoria = async(req, res) => {
     }
 };
 
-exports.alterarProdutoPeloNome = async(req, res) => {
-    const{nomeNovo, preco, descricao, categoria, status, nome} = req.body;
-        if(!nome || !nomeNovo){
+exports.alterarProduto = async(req, res) => {
+    const{nome, preco, descricao, categoria, status, idproduto} = req.body;
+        if(!nome || !preco || !categoria || !status || !idproduto) {
             return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
         }
 
-        const existeProduto = await produtoModel.listarProdutoPorNome(nome);
+        const existeProduto = await produtoModel.listarProdutoPorId(idproduto);
 
     try {
         if(!existeProduto){
             res.status(404).json({message : 'Produto nao encontratos'});
         }else{
-            const produtoAlterado = await produtoModel.alterarProdutoPeloNome(nomeNovo, preco, descricao, categoria, status, nome);
+            const produtoAlterado = await produtoModel.alterarProduto(nome, preco, descricao, categoria, status, idproduto);
         res.status(201).json({success : 'Produto alterado com sucesso!'});
         }
     } catch (error) {
@@ -167,13 +167,13 @@ exports.deletarProduto = async(req, res) => {
         const existeProduto = await produtoModel.listarProdutoPorNome(nome);
     try {
         if(!existeProduto){
-            res.status(404).json({message : 'Produto nao encontratos'});
+            return res.status(404).json({message : 'Produto nao encontratos'});
         }else{
         const produtoDeletado = await produtoModel.deletarProduto(nome);
-        res.status(200).json({succes : 'Produto desativado com sucesso'});
+        return res.status(200).json({succes : 'Produto desativado com sucesso'});
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({message : 'Erro interno'});
+        return res.status(500).json({message : 'Erro interno'});
     }
 };

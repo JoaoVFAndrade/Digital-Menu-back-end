@@ -131,11 +131,11 @@ exports.  desativarMesa =  async(req, res) =>{
             return
         }
         if(mesa.status === 'DESATIVADO'){
-            res.status(400).json({message:'Essa mesa já está desativada'});
+            return res.status(400).json({message:'Essa mesa já está desativada'});
         }
         await mesaModel.deletarMesa(idMesa);    
-        res.status(200).json('Mesa desativada');
+        return res.status(200).json('Mesa desativada');
     } catch (error) {
-        res.status(500).json({message : 'Erro interno'});
+       return res.status(500).json({message : 'Erro interno'});
     }
 };

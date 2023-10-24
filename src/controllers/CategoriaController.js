@@ -128,7 +128,7 @@ exports.updateCategoria = async(req,res) => {
 };
 
 exports.deleteCategoria = async(req, res) => {
-    const idcategoria = req.body.idCategoria;
+    const idcategoria = req.params.idCategoria;
 
     if(!idcategoria){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
@@ -142,3 +142,25 @@ exports.deleteCategoria = async(req, res) => {
         res.status(500).json({message : 'Erro interno'});
     }
 };
+
+exports.ativarCategoria = async(req, res) => {
+    const idcategoria = req.params.idCategoria;
+
+    if(!idcategoria){
+        return res.status(400).json({message : 'Campo(s) obrigatorio(s) não preenchido'});
+    }
+
+    try {
+        const listarCategoriaPorId = await categoriaModel.listarCategoriaPorId(idcategoria);
+
+        if(!listarCategoriaPorId){
+            return res.status(404).json({message: 'Categoria não encontrada'});
+        }
+
+        const categoria = await categoriaModel.ativarCategoria(idcategoria);
+
+        res.status(204).json(categoria);
+    } catch (error) {
+        res.status(500).json({message: 'Erro interno'})
+    }
+}

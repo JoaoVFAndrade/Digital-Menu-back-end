@@ -107,6 +107,22 @@ const categoriaModel = {
         } catch (error) {
             throw error;
         }
+    },
+
+    ativarCategoria : async(idcategoria) =>{
+        try {
+            const connection = await createConnection();
+            const sql = await connection.execute(
+                'UPDATE categoria '
+                + 'SET status = \'ATIVADO\' '
+                +'WHERE idcategoria = ?;',
+                [idcategoria]  
+            );
+            await connection.end();
+            return sql;
+        } catch (error) {
+            throw error
+        }
     }
 }
 

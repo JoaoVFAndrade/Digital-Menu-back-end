@@ -94,7 +94,7 @@ exports.listarPorId = async(req, res) =>{
     }
 };
 
-exports.atualizarMesa = async (req, res) => {
+exports.ativarMesa = async (req, res) => {
     const { idMesa } = req.params;
     
     if(!idMesa){ 
@@ -108,7 +108,7 @@ exports.atualizarMesa = async (req, res) => {
             return res.status(404).json({ message: 'Mesa não encontrada' });
         }
 
-        const mesa = await mesaModel.atualizarMesa(idMesa);
+        const mesa = await mesaModel.ativarMesa(idMesa);
 
         res.status(204).json(mesa);
     } catch (error) {

@@ -10,6 +10,7 @@ router.get('/categorias/listar-por-id', token, categoriaController.listarPorId);
 router.get('/categorias/listar/nome', token, categoriaController.listarPorNome);
 router.post('/categorias/criar', categoriaController.criarCategoria);
 router.put('/categorias/atualizar', categoriaController.updateCategoria);
-router.delete('/categorias/deletar', categoriaController.deleteCategoria);
+router.put('/categorias/ativar/:idCategoria', categoriaController.ativarCategoria);
+router.delete('/categorias/deletar/:idCategoria', categoriaController.deleteCategoria);
 
 module.exports = router;

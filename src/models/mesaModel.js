@@ -75,7 +75,7 @@ const mesaModel = {
         }
     },
     
-    atualizarMesa : async(idMesa) =>{
+    ativarMesa : async(idMesa) =>{
         try {
             const connection = await createConnection();
             const sql = 'UPDATE mesa SET status = \'ATIVADO\' WHERE idmesa = ?;';

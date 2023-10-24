@@ -19,10 +19,10 @@ const produtoModel = {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query( 
-            'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.status, p.id_categoria '
-            + 'FROM produto p '
-            + 'INNER JOIN categoria c '
-            + 'ON p.id_categoria = c.idcategoria;'
+                'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.status, c.nome as categoria ' 
+                +'FROM produto p ' 
+                +'INNER JOIN categoria c ' 
+                +'ON p.id_categoria = c.idcategoria;'
             );
             await connection.end();
             return rows;

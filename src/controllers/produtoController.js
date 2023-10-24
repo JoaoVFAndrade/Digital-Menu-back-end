@@ -159,17 +159,17 @@ exports.alterarPrecoDoProduto = async(req,res) =>{
 }
 
 exports.deletarProduto = async(req, res) => {
-    const{nome} = req.body;
-        if(!nome){
+    const{idproduto} = req.params;
+        if(!idproduto){
             return res.status(400).json({message : 'Campo nome obrigatorio'});
         }
 
-        const existeProduto = await produtoModel.listarProdutoPorNome(nome);
+        const existeProduto = await produtoModel.listarProdutoPorId(idproduto);
     try {
         if(!existeProduto){
             return res.status(404).json({message : 'Produto nao encontratos'});
         }else{
-        const produtoDeletado = await produtoModel.deletarProduto(nome);
+        const produtoDeletado = await produtoModel.deletarProduto(idproduto);
         return res.status(200).json({succes : 'Produto desativado com sucesso'});
         }
     } catch (error) {

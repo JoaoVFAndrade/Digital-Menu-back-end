@@ -172,14 +172,14 @@ const produtoModel = {
         }
     },
 
-    deletarProduto : async(nome) => {
+    deletarProduto : async(idproduto) => {
         try {
             const connection = await createConnection();
             const sql = 
             'UPDATE produto '
             + 'SET status = \'desativado\' '
-            + 'WHERE nome = ?;'
-            await connection.query(sql,[nome]);
+            + 'WHERE idproduto = ?;'
+            await connection.query(sql,[idproduto]);
             await connection.end();
         } catch (error) {
             throw error;

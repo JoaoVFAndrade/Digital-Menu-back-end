@@ -14,5 +14,5 @@ router.get('/produto/categoria', token, produtoController.listarProdutoPorCatego
 router.get('/produto/status', token, produtoController.listarProdutoPorStatus);
 router.put('/produto', token, produtoController.alterarProduto);
 router.put('/produto/altera-preco', token, produtoController.alterarPrecoDoProduto);
-router.delete('/produto', token, produtoController.deletarProduto);
+router.delete('/produto/:idproduto', token, produtoController.deletarProduto);
 module.exports = router;

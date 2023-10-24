@@ -22,7 +22,8 @@ const produtoModel = {
                 'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.status, c.nome as categoria ' 
                 +'FROM produto p ' 
                 +'INNER JOIN categoria c ' 
-                +'ON p.id_categoria = c.idcategoria;'
+                +'ON p.id_categoria = c.idcategoria '
+                +'ORDER BY idproduto;'
             );
             await connection.end();
             return rows;

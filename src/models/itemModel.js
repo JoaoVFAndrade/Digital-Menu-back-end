@@ -39,6 +39,22 @@ const itemModel = {
         }
     },
 
+    listarItemDosPedidos : async (idPedido) => {
+        try {
+            const connection = await createConnection();
+            const[rows, fields] = await connection.query(
+            'select i.iditem, i.id_pedido, p.nome,i.subtotal,i.observacao,i.status,i.horapedido '
+            + 'from item i inner join produto p on '
+            + 'p.IDPRODUTO = i.ID_PRODUTO where id_pedido = ?;',
+            [idPedido]
+            );
+            await connection.end();
+            return rows;    
+        } catch (error) {
+            throw error;
+        }
+    },
+
     atualizarItem : async (iditem) => {
         try {
             const connection = await createConnection();

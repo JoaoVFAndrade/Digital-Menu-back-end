@@ -50,6 +50,22 @@ exports.listarPorId = async (req, res) => {
     }
 };
 
+exports.listarItemDosPedido = async (req, res) => {
+    const {idPedido} = req.params;
+
+    if(!idPedido){
+        return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
+    }
+
+    try {
+        const itens = await itemModel.listarItemDosPedidos(idPedido);
+        res.status(200).json(itens);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message : 'Erro interno'});
+    }
+}
+
 exports.atualizarItemParaCancelado = async (req, res) => {
     const {iditem} = req.body;
 

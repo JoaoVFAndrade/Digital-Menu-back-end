@@ -43,9 +43,9 @@ const itemModel = {
         try {
             const connection = await createConnection();
             const[rows, fields] = await connection.query(
-            'select i.iditem, i.id_pedido, p.nome,i.subtotal,i.observacao,i.status,i.horapedido '
-            + 'from item i inner join produto p on '
-            + 'p.IDPRODUTO = i.ID_PRODUTO where id_pedido = ?;',
+                'select i.iditem, i.id_pedido, p.nome,i.QTDE,i.subtotal,i.observacao,i.status,i.horapedido ' 
+                +'from item i inner join produto p on '
+                +'p.IDPRODUTO = i.ID_PRODUTO where id_pedido = ?;',
             [idPedido]
             );
             await connection.end();
@@ -55,7 +55,7 @@ const itemModel = {
         }
     },
 
-    atualizarItem : async (iditem) => {
+    atualizarItemParaCancelado : async (iditem) => {
         try {
             const connection = await createConnection();
             const sql = 'UPDATE item SET status = \'CANCELADO\' WHERE IDITEM =?;';
@@ -63,6 +63,17 @@ const itemModel = {
             await connection.end();
         } catch (error) {
         throw error; 
+        }
+    },
+
+    atualizaQuantidade : async (qtde, iditem) => {
+        try {
+            const connection = await createConnection();
+            const sql = 'update item set qtde = ? where item.IDITEM = ?;';
+            await connection.query(sql, [qtde, iditem]);
+            await connection.end();
+        } catch (error) {
+            throw error;
         }
     },
 

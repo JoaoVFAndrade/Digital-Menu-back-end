@@ -67,20 +67,37 @@ exports.listarItemDosPedido = async (req, res) => {
 }
 
 exports.atualizarItemParaCancelado = async (req, res) => {
-    const {iditem} = req.body;
+    const {iditem} = req.params;
 
     if(!iditem){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
     }
 
     try {
-        const item = await itemModel.atualizarItem(iditem);
+        const item = await itemModel.atualizarItemParaCancelado(iditem);
         res.status(204).json(item);
     } catch (error) {
         console.error(error);
         res.status(500).json({message : 'Erro interno'});
     }
 };
+
+exports.atualizaQuantidade = async(req, res) => {
+    const {iditem} = req.params;
+    const {qtde} = req.body;
+
+    if(!iditem || !qtde){
+        return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
+    }
+
+    try {
+        const atualizado = await itemModel.atualizaQuantidade(qtde, iditem);
+        res.status(204).json({message: 'Atualizado com sucesso! com a quantidade: '+ qtde + ' e no id:' + iditem});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message : 'Erro interno'});
+    }
+}
 
 exports.addItemAdmin = async (req, res) => {
     const item = req.body;

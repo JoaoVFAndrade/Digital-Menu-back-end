@@ -83,8 +83,7 @@ exports.atualizarItemParaCancelado = async (req, res) => {
 };
 
 exports.atualizaQuantidade = async(req, res) => {
-    const {iditem} = req.params;
-    const {qtde} = req.body;
+    const {iditem,qtde} = req.body;
 
     if(!iditem || !qtde){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});

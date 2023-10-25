@@ -6,9 +6,9 @@ const itemController = require('../controllers/itemController');
 router.get('/pedidos/itens', token, itemController.listarItemPorPedido);
 router.get('/pedidos/list/itens', token, itemController.listarPorId);
 router.get('/itens/confirmado', token, itemController.listarItensConfirmadosPorPedido);
-router.get('/itens/pedidos/:idPedido',  itemController.listarItemDosPedido);
+router.get('/itens/pedidos/:idPedido', token, itemController.listarItemDosPedido);
 router.put('/itens/:iditem', token, itemController.atualizarItemParaCancelado);
-router.put('/itens/pedidos/quantidades/:iditem',  itemController.atualizaQuantidade)
+router.put('/itens/pedidos/quantidades', token, itemController.atualizaQuantidade)
 router.post('/itens/add/admin', token, itemController.addItemAdmin);
 router.post('/itens', token, itemController.insertItem);
 

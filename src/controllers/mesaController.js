@@ -31,9 +31,18 @@ exports.listarTodasMesas = async(req, res) =>{
         res.json(mesas);
     }catch(error){
         console.error(error);
-        res.status(500).json({message : 'Erro interno'});;
+        res.status(500).json({message : 'Erro interno'});
     }
 };
+
+exports.listarTodasAsMesasAtivadas = async(req, res) => {
+    try {
+        const mesas = await mesaModel.listarTodasAsMesasAtivas();
+        res.json(mesas);
+    } catch (error) {
+        res.status(500).json({message : 'Erro interno'});
+    }
+}
 
 exports.checkMesas = async(req,res) =>{
     const{idMesa} = req.body;

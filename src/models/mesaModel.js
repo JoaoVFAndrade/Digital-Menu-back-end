@@ -25,6 +25,19 @@ const mesaModel = {
         }
     },
 
+    listarTodasAsMesasAtivas : async() =>{
+        try {
+            const connection = await createConnection();
+            const[rows,fields] = await connection.query(
+                'SELECT idmesa, status FROM mesa where status = \'ATIVADO\';'
+            );
+            await connection.end();
+            return rows; 
+        } catch (error) {
+            throw error;
+        }
+    },
+
     checkMesa : async (idMesa) => {
         try {
             const connection = await createConnection();

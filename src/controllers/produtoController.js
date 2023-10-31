@@ -7,18 +7,18 @@ const validStatus = ['ATIVADO', 'DESATIVADO'];
 
 exports.criarPoduto = async(req,res) => {
     const {nome, preco, descricao, categoria} = req.body;
-    const imagem = req.file;
-    console.log("Log da imagem no comeco: " + imagem)
+    const imagem = req.body.imagem;
+    const imagemBuff = Buffer.from(imagem, 'base64');
+    console.log(nome);
+    console.log("Log da imagem no comeco: " + imagemBuff)
 
     if(!nome || !preco || !categoria){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
     }
-    if (!req.file) {
-        return res.status(400).json({ message: 'Nenhuma imagem enviada' });
-      }
+
     try {
        console.log('Chegou no try como : '+ imagem)
-        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria, imagem);
+        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria, imagemBuff);
         res.status(201).json({message : 'Produto criado com sucesso'});
     } catch (error) {
         console.error('Erro ao criar produto:', error);

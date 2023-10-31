@@ -1,14 +1,27 @@
 const {createConnection} = require('../connection/connection');
+const fs = require('fs');
+const util = require('util');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); 
+
+const writeFile = util.promisify(fs.writeFile);
 
 const produtoModel = {
-    criarProduto: async (nome, preco, descricao, categoria) => {
+    criarProduto: async (nome, preco, descricao, categoria, imagem) => {
         try {
             const connection = await createConnection();
-            const sql = 'INSERT INTO produto (nome, preco, descricao, id_categoria) '
-            +'SELECT ?, ?, ?, c.idcategoria '
+
+            const imagemPath = `uploads/${Date.now()}_${imagem.originalname}`.replace(/\\/g, '/');
+            console.log('Imagem.path é: '+ imagemPath)
+            await writeFile(imagemPath, imagem.buffer);
+            
+
+            const sql = 'INSERT INTO produto (nome, preco, descricao, id_categoria, IMAGEM) '
+            +'SELECT ?, ?, ?, c.idcategoria, ? '
             +'FROM categoria c '
             +'WHERE c.nome = ?;'
-            const a = await connection.query(sql, [nome, preco, descricao, categoria]);
+            console.log("chegou no insert com: "+ imagemPath)
+            const a = await connection.query(sql, [nome, preco, descricao, categoria, imagemPath]);
             await connection.end();
         } catch (error) {
             throw error;

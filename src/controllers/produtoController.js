@@ -4,16 +4,24 @@ const connection = require('../connection/connection');
 
 const validStatus = ['ATIVADO', 'DESATIVADO'];
 
+
 exports.criarPoduto = async(req,res) => {
     const {nome, preco, descricao, categoria} = req.body;
+    const imagem = req.file;
+    console.log("Log da imagem no comeco: " + imagem)
 
     if(!nome || !preco || !categoria){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
     }
+    if (!req.file) {
+        return res.status(400).json({ message: 'Nenhuma imagem enviada' });
+      }
     try {
-        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria);
+       console.log('Chegou no try como : '+ imagem)
+        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria, imagem);
         res.status(201).json({message : 'Produto criado com sucesso'});
     } catch (error) {
+        console.error('Erro ao criar produto:', error);
         res.status(500).json({message : 'Erro interno'});
     }
 };

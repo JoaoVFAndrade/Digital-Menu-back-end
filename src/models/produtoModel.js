@@ -1,14 +1,20 @@
 const {createConnection} = require('../connection/connection');
+const fs = require('fs');
+const util = require('util');
+const multer = require('multer');
 
 const produtoModel = {
-    criarProduto: async (nome, preco, descricao, categoria) => {
+    criarProduto: async (nome, preco, descricao, categoria, imagem) => {
         try {
             const connection = await createConnection();
-            const sql = 'INSERT INTO produto (nome, preco, descricao, id_categoria) '
-            +'SELECT ?, ?, ?, c.idcategoria '
-            +'FROM categoria c '
-            +'WHERE c.nome = ?;'
-            const a = await connection.query(sql, [nome, preco, descricao, categoria]);
+
+            
+            const sql = 'INSERT INTO produto (NOME, PRECO, DESCRICAO, ID_CATEGORIA, imagem) ' +
+            'SELECT ?, ?, ?, c.idcategoria, ? ' +
+            'FROM categoria c ' +
+            'WHERE c.nome = ?;';
+
+            const a = await connection.query(sql, [nome, preco, descricao, imagem, categoria]);
             await connection.end();
         } catch (error) {
             throw error;
@@ -20,6 +26,23 @@ const produtoModel = {
             const connection = await createConnection();
             const [rows, fields] = await connection.query( 
                 'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.status, c.nome as categoria ' 
+                +'FROM produto p ' 
+                +'INNER JOIN categoria c ' 
+                +'ON p.id_categoria = c.idcategoria '
+                +'ORDER BY idproduto;'
+            );
+            await connection.end();
+            return rows;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    listarProdutosComImagens : async() => {
+        try {
+            const connection = await createConnection();
+            const [ rows, fields] = await connection.query(
+                'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.imagem, p.status, c.nome as categoria ' 
                 +'FROM produto p ' 
                 +'INNER JOIN categoria c ' 
                 +'ON p.id_categoria = c.idcategoria '

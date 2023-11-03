@@ -12,6 +12,7 @@ const routerRelatorio = require('./routes/routerRelatorio');
 
 const app = express();
 
+app.use('/uploads', express.static('D:/visualcode/digitalMenuBack/Digital-Menu-back-end/uploads')); // esse e o caminho q a imagem vai ficar salva, se quiserem trocar tem que mudar aqui
 app.use(cors());
 app.use(express.json());
 app.use(routerMesa)

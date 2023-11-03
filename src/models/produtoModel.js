@@ -9,7 +9,7 @@ const produtoModel = {
             const connection = await createConnection();
 
             
-            const sql = 'INSERT INTO produto (NOME, PRECO, DESCRICAO, ID_CATEGORIA, IMAGEM) ' +
+            const sql = 'INSERT INTO produto (NOME, PRECO, DESCRICAO, ID_CATEGORIA, imagem) ' +
             'SELECT ?, ?, ?, c.idcategoria, ? ' +
             'FROM categoria c ' +
             'WHERE c.nome = ?;';
@@ -26,6 +26,23 @@ const produtoModel = {
             const connection = await createConnection();
             const [rows, fields] = await connection.query( 
                 'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.status, c.nome as categoria ' 
+                +'FROM produto p ' 
+                +'INNER JOIN categoria c ' 
+                +'ON p.id_categoria = c.idcategoria '
+                +'ORDER BY idproduto;'
+            );
+            await connection.end();
+            return rows;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    listarProdutosComImagens : async() => {
+        try {
+            const connection = await createConnection();
+            const [ rows, fields] = await connection.query(
+                'SELECT p.idproduto, p.nome, p.preco, p.descricao, p.imagem, p.status, c.nome as categoria ' 
                 +'FROM produto p ' 
                 +'INNER JOIN categoria c ' 
                 +'ON p.id_categoria = c.idcategoria '

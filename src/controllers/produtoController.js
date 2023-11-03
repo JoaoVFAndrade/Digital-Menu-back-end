@@ -1,24 +1,25 @@
 const express = require('express');
 const produtoModel = require('../models/produtoModel');
 const connection = require('../connection/connection');
+const path = require('path')
 
 const validStatus = ['ATIVADO', 'DESATIVADO'];
 
 
 exports.criarPoduto = async(req,res) => {
     const {nome, preco, descricao, categoria} = req.body;
-    const imagem = req.body.imagem;
-    const imagemBuff = Buffer.from(imagem, 'base64');
+    const imagemPath = req.file ? req.file.path : 'Nenhum arquivo enviado';
+    const imagemNome = imagemPath ? path.basename(imagemPath) : 'Nenhum arquivo enviado'
     console.log(nome);
-    console.log("Log da imagem no comeco: " + imagemBuff)
+    console.log('Log da imagem no começo:', imagemNome);
 
     if(!nome || !preco || !categoria){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
     }
 
     try {
-       console.log('Chegou no try como : '+ imagem)
-        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria, imagemBuff);
+       console.log('Chegou no try como : '+ imagemNome)
+        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria, imagemNome);
         res.status(201).json({message : 'Produto criado com sucesso'});
     } catch (error) {
         console.error('Erro ao criar produto:', error);
@@ -33,6 +34,16 @@ exports.listarProduto = async(req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({message : 'Erro interno'});
+    }
+};
+
+exports.listarProdutosComImagens = async(req, res) => {
+    try {
+        const produto = await produtoModel.listarProdutosComImagens();
+        res.status(200).json(produto);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Erro interno'});
     }
 };
 

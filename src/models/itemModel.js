@@ -71,7 +71,7 @@ const itemModel = {
         try {
             const connection = await createConnection();
             const[rows, fields] = await connection.query(
-                'select i.iditem, i.id_pedido, p.nome,i.QTDE,i.subtotal,i.observacao,i.status,i.horapedido ' 
+                'select i.iditem, i.id_pedido, p.nome,i.QTDE,p.preco,i.subtotal,i.observacao,i.status,i.horapedido ' 
                 +'from item i inner join produto p on '
                 +'p.IDPRODUTO = i.ID_PRODUTO where id_pedido = ?;',
             [idPedido]

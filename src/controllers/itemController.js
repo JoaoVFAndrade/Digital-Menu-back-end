@@ -2,21 +2,21 @@ const express = require('express');
 const itemModel = require('../models/itemModel');
 const connection = require('../connection/connection');
 
-exports.insertItem = async(req,res) =>{
-    const{id_pedido, id_produto,qtde,observacao} = req.body;
-
-    if(!id_pedido || !id_produto || !qtde){
-        return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
+exports.insertItem = async (req, res) => {
+    const { numeroPedido, itensDoCarrinho } = req.body;
+    if (!numeroPedido || !itensDoCarrinho || !Array.isArray(itensDoCarrinho)) {
+      return res.status(400).json({ message: 'Campos obrigatórios não preenchidos corretamente' });
     }
-
+  
     try {
-        const item = await itemModel.adicionaItem(id_pedido, id_produto,qtde,observacao);
-        res.status(201).json(item);
+      const insertedItems = await itemModel.adicionaItens(numeroPedido, itensDoCarrinho);
+      res.status(201).json(insertedItems);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({message : 'Erro interno'});
+      console.error(error);
+      res.status(500).json({ message: 'Erro interno' });
     }
-};
+  };
+  
 
 exports.listarItemPorPedido = async (req, res) => {
     const { id_pedido } = req.body;

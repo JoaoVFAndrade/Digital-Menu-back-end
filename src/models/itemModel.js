@@ -1,15 +1,43 @@
 const {createConnection} = require('../connection/connection');
 
 const itemModel = {
-    adicionaItem : async( id_pedido, id_produto,qtde, observacao) =>{
+    adicionaItens: async (id_pedido, itensDoCarrinho, tentativas = 3) => {
+      let insertedItems = [];
+  
+      const tentarTransacao = async () => {
         try {
-            const connection = await createConnection();
-            const sql = 'insert into item values(default, ? , ?, ?, (select preco from produto where idproduto = id_produto) * qtde ,? ,default,default);'
-            await connection.query(sql, [id_pedido, id_produto, qtde,observacao]);
-            await connection.end();
+          const connection = await createConnection();
+          await connection.beginTransaction();
+  
+          for (const item of itensDoCarrinho) {
+            const { id_produto, qtde, observacao } = item;
+            const preco = (await connection.query('SELECT preco FROM produto WHERE idproduto = ?', [id_produto]))[0][0].preco;
+            const valorTotal = preco * qtde;
+  
+            await connection.query('INSERT INTO item VALUES (default, ?, ?, ?, ?, ?, default, default);', [id_pedido, id_produto, qtde, valorTotal, observacao]);
+  
+            insertedItems.push({ id_pedido, id_produto, qtde, valorTotal, observacao });
+          }
+  
+          await connection.commit();
+          await connection.end();
+  
+          return insertedItems;
         } catch (error) {
+          if (error.message.includes('Deadlock') && tentativas > 0) {
+            // Espera por um curto período (por exemplo, 100ms)
+            await new Promise(resolve => setTimeout(resolve, 100));
+            return tentarTransacao(tentativas - 1); // Tente a operação novamente com uma tentativa a menos
+          } else {
+            if (connection) {
+              await connection.rollback();
+            }
             throw error;
+          }
         }
+      };
+  
+      return tentarTransacao();
     },
 
     listarItemPorPedido: async (id_pedido) => {   

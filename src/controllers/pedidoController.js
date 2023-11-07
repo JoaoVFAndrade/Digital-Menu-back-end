@@ -5,7 +5,7 @@ const connection = require('../connection/connection');
 const validStatus = ["ABERTO", "CANCELADO", "ENCERRADO"];
 
 exports.adicionaPedido = async (req, res) => {
-    const { idMesa } = req.body;
+    const { idMesa } = req.params;
   
     if (!idMesa) {
       return res.status(400).json({ message: 'Campo(s) obrigatorio(s) nao preenchido' });
@@ -158,7 +158,7 @@ exports.atualizaPedidoItemAlterado = async(req, res) => {
 };
 
 exports.atualizarPedidoVazio = async(req, res) => {
-    const {idpedido} = req.body;
+    const {idpedido} = req.params;
 
     if(!idpedido){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});

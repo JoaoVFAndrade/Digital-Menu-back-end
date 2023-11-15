@@ -9,6 +9,7 @@ router.get('/pedidos/dia', token, pedidoController.listarProdutoPorDia);
 router.get('/pedidos/faixa-preco', token, pedidoController.listarProdutoPorFaixaDePreco);
 router.get('/pedidos/faixa-dia', token, pedidoController.listarProdutoPorFaixaDia);
 router.get('/pedidos/venda-por-dia', token, pedidoController.listarVendasPorDia);
+router.get('/pedidos/total/:idpedido', token, pedidoController.listarTotal);
 router.post('/pedidos/:idMesa', token, pedidoController.adicionaPedido);
 router.put('/pedidos/alterar-item', token, pedidoController.atualizaPedidoItemAlterado);
 router.put('/pedidos/encerra-pedido/:idpedido', token, pedidoController.atualizarPedidoVazio);

@@ -48,6 +48,17 @@ exports.listarPedido = async(req, res) => {
     }
 };
 
+exports.listarTotal = async(req, res) => {
+    const { idpedido} = req.params;
+    try {
+        const total = await pedidoModel.listarTotal(idpedido);
+        res.status(200).json(total);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message : 'Erro interno'});
+    }
+};
+
 exports.listarPedidoPorMesa = async(req, res) => { 
     const{idMesa} = req.body;
 

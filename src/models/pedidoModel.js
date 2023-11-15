@@ -52,6 +52,21 @@ const pedidoModel = {
         }
     },
 
+    listarTotal : async(idpedido) => {
+        try {
+            const connection = await createConnection();
+            const [rows, fields] = await connection.query(
+                'SELECT TOTAL FROM PEDIDO '
+                +' WHERE IDPEDIDO = ?;',
+                [idpedido]
+            )
+            await connection.end();
+            return rows;
+        } catch (error) {
+            throw error;
+        }
+    },
+
     listarPedidoPorMesa : async(idMesa) => {
         try {
             const connection = await createConnection();

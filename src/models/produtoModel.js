@@ -46,6 +46,7 @@ const produtoModel = {
                 +'FROM produto p ' 
                 +'INNER JOIN categoria c ' 
                 +'ON p.id_categoria = c.idcategoria '
+                +'Where p.Status = \'ATIVADO\' '
                 +'ORDER BY idproduto;'
             );
             await connection.end();

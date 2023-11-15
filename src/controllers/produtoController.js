@@ -10,9 +10,7 @@ exports.criarPoduto = async(req,res) => {
     const {nome, preco, descricao, categoria} = req.body;
     const imagemPath = req.file ? req.file.path : 'Nenhum arquivo enviado';
     const imagemNome = imagemPath ? path.basename(imagemPath) : 'Nenhum arquivo enviado'
-    console.log(nome);
-    console.log('Log da imagem no começo:', imagemNome);
-
+    console.log(nome, preco, descricao, categoria, imagemNome)
     if(!nome || !preco || !categoria){
         return res.status(400).json({message : 'Campo(s) obrigatorio(s) nao preenchido'});
     }

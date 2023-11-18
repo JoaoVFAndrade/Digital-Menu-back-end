@@ -22,7 +22,6 @@ exports.adicionaPedido = async (req, res) => {
       // Se não houver pedido aberto, adicionar o pedido
       const pedido = await pedidoModel.adicionarPedido(idMesa);
   
-      // Verifica se há resultados na matriz e pega o valor de idpedido
       const idpedido = pedido.length > 0 ? pedido[0].idpedido : null;
   
       if (idpedido !== null) {

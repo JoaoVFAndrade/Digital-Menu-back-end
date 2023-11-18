@@ -13,15 +13,10 @@ exports.totalPedidos = async(req,res) => {
     }
 };
 
-exports.listarQtdeVendidaPorItem = async(req, res) => {
-    const {idproduto} = req.body;
-
-    if(!idproduto){
-        return res.status(404).json({message : 'O codigo do item precisa ser informado'})
-    }
-
+exports.produtoMaisFaturado = async(req, res) => {
+    const{mes, ano} = req.body;
     try {
-        const relatorio = await relatorioModel.listarItemQtdeVendidaPorItem(idproduto);
+        const relatorio = await relatorioModel.produtoMaisFaturado(mes,ano);
         res.status(200).json(relatorio);
     } catch (error) {
         console.error(error);
@@ -29,9 +24,10 @@ exports.listarQtdeVendidaPorItem = async(req, res) => {
     }
 };
 
-exports.listarItensMaisVendidos = async(req, res) => {
+exports.produtoMaisVendido = async(req, res) => {
+    const{mes, ano} = req.body;
     try {
-        const relatorio = await relatorioModel.listarItensMaisVendidos();
+        const relatorio = await relatorioModel.produtosMaisVendidos(mes,ano);
         res.status(200).json(relatorio);
     } catch (error) {
         console.error(error);
@@ -39,41 +35,14 @@ exports.listarItensMaisVendidos = async(req, res) => {
     }
 };
 
-exports.totalPedidosPorMes = async(req, res) => {
-    const {mes} = req.body;
-
+exports.arrecadacaoPedidoNoMes = async(req, res) => {
+    const{ano, mes} = req.body;
     try {
-        const relatorio = await relatorioModel.totalPedidosPorMes(mes)
-        res.status(200).json(relatorio)
+        const relatorio = await relatorioModel.arrecadacaoPedidosNoMes(ano,mes);
+        res.status(200).json(relatorio);
     } catch (error) {
         console.error(error);
         res.status(500).json(error);
     }
 };
-
-exports.listarItensPorPedidoAgrupado = async(req, res) => {
-    const {id_pedido} = req.body;
-    
-    try {
-        const relatorio = await relatorioModel.listarItensPorPedidoAgrupado(id_pedido);
-        if (relatorio === null) {
-            return res.status(404).json({ message: 'Nenhum item foi encontrado para o pedido especificado.' });
-        }
-        res.status(200).json(relatorio)
-    } catch (error) {
-        console.error(error);
-        res.status(500).json(error);
-    }
-};
-
-exports.calcularGorjeta = async(req, res) => {
-    try {
-        const resultado = await relatorioModel.calcularGorjeta();
-        res.status(200).json(resultado)
-    } catch (error) {
-        console.error(error);
-        res.status(500).json(error);
-    }
-};
-
 

@@ -15,90 +15,63 @@ const relatorioModel = {
         }
     },
 
-    listarItemQtdeVendidaPorItem: async (idproduto) => {
+    produtoMaisFaturado : async(mes, ano) => {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT p.idproduto, p.nome, p.preco, SUM(i.qtde) AS qtdeTotal, SUM(i.subtotal) AS valorTotal '
-                +'FROM item i '
-                +'INNER JOIN produto p ON i.id_produto = p.idproduto '
-                +'WHERE p.idproduto = ? '
-                +'GROUP BY p.idproduto, p.nome, p.preco;',
-                [idproduto] 
-            );
+                'SELECT produto.nome AS NomeDoProduto, SUM(item.subtotal) AS QuantidadeVendida '
+                +'FROM pedido '
+                +'JOIN item ON pedido.idpedido = item.id_pedido '
+                +'JOIN produto ON item.id_produto = produto.idproduto '
+                +'WHERE MONTH(pedido.data) = ? AND YEAR(pedido.data) = ? '
+                +'GROUP BY item.id_produto '
+                +'ORDER BY SUM(item.subtotal) DESC;',
+                [mes, ano]
+                );
             await connection.end();
-            return rows;
+            return rows;    
         } catch (error) {
-        throw error;
+            console.error(error);
         }
     },
 
-    listarItensMaisVendidos : async() => {
-        try {
-            const connection = await createConnection();
-            const[rows, fields] = await connection.query(
-                'SELECT p.idproduto, p.nome, p.preco, SUM(i.qtde) AS qtdeTotal, SUM(i.subtotal) AS valorTotal '
-                + 'FROM item i '
-                + 'INNER JOIN produto p '
-                + 'ON i.id_produto = p.idproduto '
-                + 'GROUP BY p.nome '
-                + 'ORDER BY SUM(i.qtde) DESC;'
-            );
-            await connection.end();
-            return rows;
-        } catch (error) {
-            throw error;
-        }
-    },
-
-    totalPedidosPorMes : async(mes) => {
-        try {
-            const connection = await createConnection();
-            const[rows, fields] = await connection.query(
-                'SELECT COUNT(*) AS Total_Pedidos, SUM(total) AS Total_Vendido, AVG(total) AS Media_Pedido '
-                + 'FROM pedido '
-                + 'WHERE MONTH(data) = ?;',
-                [mes]
-            );
-            await connection.end();
-            return rows;
-        } catch (error) {
-            throw error;
-        }
-    },
-
-    listarItensPorPedidoAgrupado : async(id_pedido) => {
+    produtosMaisVendidos : async(mes,ano) =>{
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT p.nome, p.preco, SUM(i.qtde) AS qtde, (p.preco*SUM(i.qtde)) AS subtotal '
-                + 'FROM item i '
-                + 'INNER JOIN produto p '
-                + 'ON p.idproduto = i.id_produto '
-                + 'WHERE i.id_pedido = ? '
-                + 'GROUP BY i.id_produto;',
-                [id_pedido]
+                'SELECT produto.nome AS NomeDoProduto, SUM(item.qtde) AS QuantidadeVendida '
+                +'FROM pedido '
+                +'JOIN item ON pedido.idpedido = item.id_pedido '
+                +'JOIN produto ON item.id_produto = produto.idproduto '
+                +'WHERE MONTH(pedido.data) = ? AND YEAR(pedido.data) = ? '
+                +'GROUP BY item.id_produto '
+                +'ORDER BY SUM(item.QTDE) DESC;',
+                [mes,ano]
             );
-            if (rows.length === 0){
-                return null;
-            }
             await connection.end();
             return rows;
         } catch (error) {
-            throw error;
+            console.error(error);
         }
     },
 
-    calcularGorjeta : async() => {
+    arrecadacaoPedidosNoMes : async(ano, mes) =>{
         try {
             const connection = await createConnection();
-            const[rows, fields] = await connection.query(
-                'SELECT DATE_FORMAT(DATA, \'%m/%Y\') AS MES_ANO,SUM(TOTAL * 0.1) AS GORGETA FROM PEDIDO GROUP BY DATE_FORMAT(DATA, \'%m/%Y\');'
+            const [rows, fields] = await connection.query(
+                'SELECT mes, SUM(total) AS total '
+                +'FROM ('
+                +'SELECT DATE_FORMAT(data, "%c/%Y") AS mes, total '
+                +'FROM pedido '
+                +'WHERE YEAR(data) = ? AND MONTH(data) = ? '
+                +') AS subquery '
+                +'GROUP BY mes;',
+                [ano, mes]
             );
             await connection.end();
             return rows;
         } catch (error) {
-            throw error;
+            console.error(error);
         }
     }
 }

@@ -14,7 +14,7 @@ exports.totalPedidos = async(req,res) => {
 };
 
 exports.produtoMaisFaturado = async(req, res) => {
-    const{mes, ano} = req.body;
+    const{mes, ano} = req.params;
     try {
         const relatorio = await relatorioModel.produtoMaisFaturado(mes,ano);
         res.status(200).json(relatorio);
@@ -25,7 +25,7 @@ exports.produtoMaisFaturado = async(req, res) => {
 };
 
 exports.produtoMaisVendido = async(req, res) => {
-    const{mes, ano} = req.body;
+    const{mes, ano} = req.params;
     try {
         const relatorio = await relatorioModel.produtosMaisVendidos(mes,ano);
         res.status(200).json(relatorio);
@@ -36,7 +36,7 @@ exports.produtoMaisVendido = async(req, res) => {
 };
 
 exports.arrecadacaoPedidoNoMes = async(req, res) => {
-    const{ano, mes} = req.body;
+    const{ano, mes} = req.params;
     try {
         const relatorio = await relatorioModel.arrecadacaoPedidosNoMes(ano,mes);
         res.status(200).json(relatorio);

@@ -19,7 +19,7 @@ const relatorioModel = {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT produto.nome AS NomeDoProduto, SUM(item.subtotal) AS QuantidadeVendida '
+                'SELECT produto.imagem, produto.nome AS NomeDoProduto, SUM(item.subtotal) AS QuantidadeVendida '
                 +'FROM pedido '
                 +'JOIN item ON pedido.idpedido = item.id_pedido '
                 +'JOIN produto ON item.id_produto = produto.idproduto '
@@ -39,7 +39,7 @@ const relatorioModel = {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT produto.nome AS NomeDoProduto, SUM(item.qtde) AS QuantidadeVendida '
+                'SELECT produto.imagem, produto.nome AS NomeDoProduto, SUM(item.qtde) AS QuantidadeVendida '
                 +'FROM pedido '
                 +'JOIN item ON pedido.idpedido = item.id_pedido '
                 +'JOIN produto ON item.id_produto = produto.idproduto '

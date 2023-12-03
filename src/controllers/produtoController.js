@@ -16,8 +16,8 @@ exports.criarPoduto = async(req,res) => {
     }
 
     try {
-       console.log('Chegou no try como : '+ imagemNome)
-        const produto = await produtoModel.criarProduto(nome,preco,descricao,categoria, imagemNome);
+        const precoFormatado = preco.replace(',','.');
+        const produto = await produtoModel.criarProduto(nome,precoFormatado,descricao,categoria, imagemNome);
         res.status(201).json({message : 'Produto criado com sucesso'});
     } catch (error) {
         console.error('Erro ao criar produto:', error);
@@ -140,12 +140,12 @@ exports.alterarProduto = async(req, res) => {
         }
 
         const existeProduto = await produtoModel.listarProdutoPorId(idproduto);
-
+        const precoFormatado = preco.replace(',','.');
     try {
         if(!existeProduto){
             res.status(404).json({message : 'Produto nao encontratos'});
         }else{
-            const produtoAlterado = await produtoModel.alterarProduto(nome, preco, descricao, categoria, status, idproduto);
+            const produtoAlterado = await produtoModel.alterarProduto(nome, precoFormatado, descricao, categoria, status, idproduto);
         res.status(201).json({success : 'Produto alterado com sucesso!'});
         }
     } catch (error) {

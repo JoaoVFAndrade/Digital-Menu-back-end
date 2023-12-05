@@ -6,7 +6,7 @@ const produtoController = require('../controllers/produtoController');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'D:/visualcode/digitalMenuBack/Digital-Menu-back-end/uploads');
+        cb(null, 'C:/quartosemestre/DigitalMenuBack/Digital-Menu-back-end/uploads');
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '_' + file.originalname); 

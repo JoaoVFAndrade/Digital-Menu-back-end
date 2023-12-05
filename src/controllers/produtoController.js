@@ -16,6 +16,7 @@ exports.criarPoduto = async(req,res) => {
     }
 
     try {
+
         const precoFormatado = preco.replace(',','.');
         const produto = await produtoModel.criarProduto(nome,precoFormatado,descricao,categoria, imagemNome);
         res.status(201).json({message : 'Produto criado com sucesso'});
@@ -141,6 +142,7 @@ exports.alterarProduto = async(req, res) => {
 
         const existeProduto = await produtoModel.listarProdutoPorId(idproduto);
         const precoFormatado = preco.replace(',','.');
+
     try {
         if(!existeProduto){
             res.status(404).json({message : 'Produto nao encontratos'});

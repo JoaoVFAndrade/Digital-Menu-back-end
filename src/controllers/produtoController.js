@@ -16,8 +16,9 @@ exports.criarPoduto = async(req,res) => {
     }
 
     try {
-        const precoFormatatado = preco.replace(',','.');
-        const produto = await produtoModel.criarProduto(nome,precoFormatatado,descricao,categoria, imagemNome);
+
+        const precoFormatado = preco.replace(',','.');
+        const produto = await produtoModel.criarProduto(nome,precoFormatado,descricao,categoria, imagemNome);
         res.status(201).json({message : 'Produto criado com sucesso'});
     } catch (error) {
         console.error('Erro ao criar produto:', error);

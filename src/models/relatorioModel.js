@@ -19,7 +19,7 @@ const relatorioModel = {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT produto.nome AS NomeDoProduto, SUM(item.subtotal) AS QuantidadeVendida '
+                'SELECT produto.imagem, produto.nome AS NomeDoProduto, SUM(item.subtotal) AS QuantidadeVendida '
                 +'FROM pedido '
                 +'JOIN item ON pedido.idpedido = item.id_pedido '
                 +'JOIN produto ON item.id_produto = produto.idproduto '
@@ -39,7 +39,7 @@ const relatorioModel = {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT produto.nome AS NomeDoProduto, SUM(item.qtde) AS QuantidadeVendida '
+                'SELECT produto.imagem, produto.nome AS NomeDoProduto, SUM(item.qtde) AS QuantidadeVendida '
                 +'FROM pedido '
                 +'JOIN item ON pedido.idpedido = item.id_pedido '
                 +'JOIN produto ON item.id_produto = produto.idproduto '
@@ -59,13 +59,20 @@ const relatorioModel = {
         try {
             const connection = await createConnection();
             const [rows, fields] = await connection.query(
-                'SELECT mes, SUM(total) AS total '
-                +'FROM ('
-                +'SELECT DATE_FORMAT(data, "%c/%Y") AS mes, total '
-                +'FROM pedido '
-                +'WHERE YEAR(data) = ? AND MONTH(data) = ? '
-                +') AS subquery '
-                +'GROUP BY mes;',
+                // 'SELECT mes, SUM(total) AS total '
+                // +'FROM ('
+                // +'SELECT DATE_FORMAT(data, "%c/%Y") AS mes, total '
+                // +'FROM pedido '
+                // +'WHERE YEAR(data) = ? AND MONTH(data) = ? '
+                // +') AS subquery '
+                // +'GROUP BY mes;',
+
+                'SELECT date_format(data,"%c/%Y") AS mes, SUM(total) AS total, COUNT(*) as quantidade '
+                + 'FROM pedido '
+                + 'WHERE year(data) = ? and month(data) = ? '
+                + 'GROUP BY mes;',
+
+
                 [ano, mes]
             );
             await connection.end();
